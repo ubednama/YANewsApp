@@ -74,6 +74,7 @@ const categories = [
 ];
 
 let api = process.env.REACT_APP_API;
+console.log("from home api",api)
 
 export default class App extends Component {
 
