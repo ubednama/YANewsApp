@@ -60,7 +60,6 @@ export default class News extends Component {
     
     try {
       let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${API}&page=${page}&pageSize=${pageSize}`
-      // let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=9a7bcf4297e1461e8c57f64e868b38da&page=${page}&pageSize=${pageSize}`
       
       console.log("from news", url);
       console.log("from fetch", category)
@@ -71,48 +70,58 @@ export default class News extends Component {
       
     } catch (error) {
       console.log("error while fetching url ", error);
-      // this.setState({loading: false})
+      this.setState({loading: true})
     }
   };
+
+  formatPublishedDate(publishedAt){
+    console.log("from format date ", publishedAt)
+    const publishedDate = new Date(publishedAt);
+    const currentDate = new Date();
+
+    const timeDifference = currentDate.getTime() - publishedDate.getTime();
+    const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+    const hoursDifference = Math.floor(minutesDifference / 60);
+
+    if (hoursDifference < 1) {
+      return `${minutesDifference} minutes ago`;
+    } else if (hoursDifference < 24) {
+      return `${hoursDifference} hours ago`;
+    } else if (hoursDifference < 48) {
+      return 'Yesterday ' + publishedDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    } else {
+      const day = publishedDate.getDate();
+      const month = publishedDate.getMonth() + 1;
+      const hours = publishedDate.getHours();
+      const minutes = publishedDate.getMinutes();
+      const formattedDate = `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month} ${hours > 12 ? hours - 12 : hours}:${minutes < 10 ? '0' + minutes : minutes} ${hours >= 12 ? 'PM' : 'AM'}`;
+      console.log("formattedDate")
+      return formattedDate;
+  }
+  };
+
   
-  // handleNextClick = () => {
-  //   const nextPage = this.state.page + 1;
-  //   this.setState({page: nextPage}, () => {
-  //     console.log(this.state.page);
-  //     this.fetchData();
-  //   })};
-
-  // handlePrevClick = () => {
-  //   const prevPage = this.state.page - 1;
-  //   this.setState({page: prevPage}, () => {
-  //     console.log(this.state.page);
-  //     this.fetchData();
-  //   });
-  // }
-
-
   handleNextClick = () => {
     this.setState(
       (prevState) => ({ page: prevState.page + 1 })
-      // () => this.fetchData()
-    );
-    console.log("next", this.state.page)
+      );
+      console.log("next", this.state.page)
   };
-
+    
   handlePrevClick = () => {
     this.setState(
       (prevState) => ({ page: prevState.page - 1 })
-      // () => this.fetchData()
-    );
-    console.log("prev ", this.state.page)
+      );
+      console.log("prev ", this.state.page)
   };
-
-
-  
-  
+      
+      
+      
+      
   render() {
+    // console.log(this.formatPublishedDate(this.state.element.publishedAt));
     // console.log(this.state.articles[0]);
-    const { articles, loading, page, totalArticles } = this.state;
+    const { articles, loading, page, totalArticles} = this.state;
     
     return (
       <div className='container my-3'>
@@ -121,7 +130,7 @@ export default class News extends Component {
         <div className="d-flex justify-content-center">{loading && <Spinner/>}</div>
         <div className="row">
         {articles.map((element)=>{
-          return <div className="col-md-4" key={element.url}> <NewsItem title={element.title?element.title.slice(0,80):""} description={element.description?element.description.slice(0,110):''} imageUrl={element.urlToImage} articleLink={element.url}/></div>
+          return <div className="col-md-4" key={element.url}> <NewsItem title={element.title?element.title.slice(0,80):""} description={element.description?element.description.slice(0,110):''} imageUrl={element.urlToImage} articleLink={element.url} author={element.author} publishedDate={this.formatPublishedDate(element.publishedAt)}/></div>
         })}
         </div>
         <div className="d-flex justify-content-between my-2 mx-2">

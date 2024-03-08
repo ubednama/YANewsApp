@@ -53,7 +53,7 @@ export class NavBar extends Component {
                 
                 {this.props.categories.map(category => (
                   <li className="nav-item" key={category}>
-                  <Link className={`nav-link ${selectedCategory === category ? 'active' : ''}`} to={`/${category.toLowerCase()}`} onClick={() => this.handleCategoryClick(category)}>
+                  <Link className={`nav-link ${selectedCategory === category ? 'active' : ''}`} to={`/${category.toLowerCase()}`} onClick={() => this.handleCategoryClick(category)} rel="noreferrer">
                     {category}
                   </Link>
                 </li>
@@ -70,7 +70,7 @@ export class NavBar extends Component {
                       <li key={key} style={{ listStyle: 'none' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           <img src={`https://flagsapi.com/${key.toUpperCase()}/flat/32.png`} alt={key} style={{ marginRight: '5px' }} />
-                          <Link className={`dropdown-item ${selectedCountry === country ? 'active' : ''}`} to="#" onClick={() => this.handleCountryClick(key)}>
+                          <Link className={`dropdown-item ${selectedCountry === country ? 'active' : ''}`} to="#" onClick={() => this.handleCountryClick(key)} rel="noreferrer">
                             {value}
                           </Link>
                         </div>
