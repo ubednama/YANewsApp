@@ -61,7 +61,7 @@ export class NavBar extends Component {
               </ul>
 
                 <li className="nav-item dropdown navbar-nav me-3 mb-2 mb-lg-0">
-                  <img src={`https://flagsapi.com/${country.toUpperCase()}/flat/32.png`} />
+                  <img src={`https://flagsapi.com/${country.toUpperCase()}/flat/32.png`} alt={`${country}`} />
                   <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {countryFull}
                   </Link>
