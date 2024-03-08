@@ -110,9 +110,9 @@ export default class App extends Component {
       <Router>
       <div>
       <NavBar country={country} countryFull={countries[country]} onCategoryChange={this.handleCategoryChange} onCountryChange={this.handleCountryChange} countries={countries} categories={categories}/>
-      <Routes> {/* Use Routes instead of Switch */}
+      <Routes>
       <Route exact path='/' element={<News pageSize={size} country={country} API={api} category='general' countries={countries} />} />
-        <Route exact path="/:category" element={<News pageSize={size} country={country} API={api} category={category} countries={countries} />} /> {/* Define your route */}
+        <Route exact path="/:category" element={<News pageSize={size} country={country} API={api} category={category} countries={countries} />} />
       </Routes>
     </div>
     </Router>
