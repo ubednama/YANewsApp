@@ -1,12 +1,13 @@
 import './App.css';
 
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import NavBar from './components/NavBar';
 import News from './components/News';
 import {BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoadingBar from 'react-top-loading-bar'
 
 
-let size = 3;
+// let size = 4;
 let countries = {
   'in': 'India',
   'us': 'United States',
@@ -73,50 +74,56 @@ const categories = [
   'Technology'
 ];
 
+
 let api = process.env.REACT_APP_API;
-console.log("from home api",api)
+// console.log("from home api",api)
 
-export default class App extends Component {
+const App =() => {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      category: 'general',
-      country: 'in'
-    };
-  }
+  const [country, setCountry] = useState("in");
+  const [category, setCategory] = useState('general')
+  const [progress, setProgress] = useState(0)
+  const [pageSize, setPageSize] = useState(6);
 
+
+  // const handlePageSizeChange = (size) => {
+  //   setSize(size)
+  //   // console.log("for page size",state.size)
+  // }
   
-  // setState()
-  // console.log(state)
-  //this is same as above (this is a state variable named state which we can update using setState)
-  // state = {
-  //   category: 'general', // Default category
+  // const handleCategoryChange = (category) => {
+  //   setCategory( category )
+  //   // console.log(state)
   // };
   
-  handleCategoryChange = (category) => {
-    this.setState({ category })
-    console.log(this.state)
-  };
-  
-  handleCountryChange = (country) => {
-    this.setState({country, page: 1})
-    console.log("from app ",country)
-  }
+  // const handleCountryChange = (country) => {
+  //   setCountry({country, page: 1})
+  //   console.log("from app ",country)
+  // }
 
-    render() {
-      const { category, country } = this.state;
-      console.log("from app", category)
-    return (
-      <Router>
-      <div>
-      <NavBar country={country} countryFull={countries[country]} onCategoryChange={this.handleCategoryChange} onCountryChange={this.handleCountryChange} countries={countries} categories={categories}/>
-      <Routes>
-      <Route exact path='/' element={<News pageSize={size} country={country} API={api} category='general' countries={countries} />} />
-        <Route exact path="/:category" element={<News pageSize={size} country={country} API={api} category={category} countries={countries} />} />
-      </Routes>
-    </div>
-    </Router>
-    )
-  }
+  // setProgress = (progress) => {
+  //   setProgress(progress)
+  // }
+
+  // const { category, country, size, progress } = state;
+  // console.log("from app", category)
+  return (
+    <Router>
+    <div>
+    <NavBar country={country} countryFull={countries[country]} setCategory={setCategory} setCountry={setCountry} countries={countries} categories={categories} />
+    <LoadingBar
+      height={2.5}
+      color='#f11946'
+      progress={progress}
+    />
+    <Routes>
+      <Route exact path='/' element={<News setProgress={setProgress} pageSize={pageSize} country={country} API={api} category='general' countries={countries} />} />
+      <Route exact path='/:country' element={<News setProgress={setProgress} pageSize={pageSize} country={country} API={api} category='general' countries={countries} />} />
+      <Route exact path="/:country/:category" element={<News setProgress={setProgress} pageSize={pageSize} country={country} API={api} category={category} countries={countries} />} />
+    </Routes>
+  </div>
+  </Router>
+  )
 }
+
+export default App;
