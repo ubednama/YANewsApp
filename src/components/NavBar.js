@@ -11,6 +11,8 @@ const NavBar = (props) => {
   const handleCategoryClick = (category) => {
     setCategory(category);
     setSelectedCategory(category)
+    // setPageSize(30)
+    console.log(selectedCategory);
     console.log("from navbar category ", category)
   };
 
@@ -29,6 +31,7 @@ const NavBar = (props) => {
 
     // const { selectedCategory, selectedCountry } = state;
     const { country, countries, countryFull, pageSize } = props;
+    
 
     const dropdownItems = [];
     for (let i = 3; i <= 30; i += 3) {
@@ -62,7 +65,7 @@ const NavBar = (props) => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/">
+                <Link className={`nav-link ${selectedCategory === 'General'  ? 'active' : ''}`}aria-current="page" to="/" onClick={() => handleCategoryClick("General")} >
                   Home
                 </Link>
               </li>
@@ -75,14 +78,14 @@ const NavBar = (props) => {
                 </li>
                 )) }
             </ul>
-            <li className="nav-item dropdown navbar-nav me-3 mb-2 mb-lg-0">
+            {/* <li className="nav-item dropdown navbar-nav me-3 mb-2 mb-lg-0">
               <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {pageSize} articles
               </Link>
               <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style={{ maxHeight: '150px', overflowY: 'auto' }}>
                 {dropdownItems}
               </ul>
-            </li>
+            </li> */}
             <li className="nav-item dropdown navbar-nav me-3 mb-2 mb-lg-0">
               <img src={`https://flagsapi.com/${country.toUpperCase()}/flat/32.png`} alt={`${country}`} />
               <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

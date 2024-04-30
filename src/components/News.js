@@ -13,7 +13,7 @@ const News = (props) => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [totalArticles, setTotalArticles] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
+  // const [hasMore, setHasMore] = useState(true);
 
   
   
@@ -27,7 +27,7 @@ const News = (props) => {
     setProgress(10);
     
     try {
-      let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${API}&page=${page}&pageSize=${pageSize}`
+      let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${API}&page=${page}&pageSize=30`
       setLoading(true)
       console.log("from news", url);
       
@@ -36,12 +36,14 @@ const News = (props) => {
       
       let parsedData = await response.json();
       setProgress(70)
-      
+      console.log(parsedData)
       setArticles(parsedData.articles);
-      console.log('1st fetch ',articles.length)
-      setTotalArticles(parsedData.totalResults)
+      console.log('1st fetch ',articles.length, typeof articles)
+      setTotalArticles(parsedData.totalResults)     //this sets total articles
       setLoading(false)
       setProgress(100);
+
+      // console.log()
       
     } catch (error) {
       setLoading(true);
@@ -104,47 +106,39 @@ const News = (props) => {
 
   const fetchMoreData = async() => {
 
-  let nextPage = page + 1;
+    let nextPage = page + 1;
 
-  let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${API}&page=${nextPage}&pageSize=${pageSize}`;
-  setPage(page+1) 
+    let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${API}&page=${nextPage}&pageSize=30`;
+    setPage(page+1) 
 
 
-  console.log("from news", url);
+    console.log("from news", url);
 
-  try {
-    let response = await fetch(url);
-    let parsedData = await response.json();
+    // try {
+      let response = await fetch(url);
+      let parsedData = await response.json();
 
-    setArticles(prevArticles => [...prevArticles, ...parsedData.articles]);
-    setTotalArticles(parsedData.totalResults)
+      console.log('Number of articles before concatenation:', parsedData.articles.length);
 
-    let totalPages = Math.ceil(parsedData.totalResults / pageSize);
-    setHasMore(nextPage < totalPages);
+      setArticles(prevArticles => Object.assign({}, prevArticles, parsedData.articles));
 
-    console.log('more fetch ',articles.length)
-    
-    setPage(nextPage);
-    } catch (error) {
-      console.log("Error while fetching data:", error);
-      setLoading(false);
-    }
+      // setArticles(prevArticles => ({...prevArticles, ...parsedData.articles}));
+      // setTotalArticles(parsedData.totalResults)
+
+      // let totalPages = Math.ceil(parsedData.totalResults / pageSize);
+      // setHasMore(nextPage < totalPages);
+
+      console.log('more fetch ',articles.length)
+      
+      setPage(nextPage);
+      // } catch (error) {
+      //   console.log("Error while fetching data:", error);
+      //   setLoading(false);
+      // }
   };
 
-  
-  // handleNextClick = () => {
-  //   this.setState(
-  //     (prevState) => ({ page: prevState.page + 1 })
-  //     );
-  //     // console.log("next", this.state.page)
-  // };
-    
-  // handlePrevClick = () => {
-  //   this.setState(
-  //     (prevState) => ({ page: prevState.page - 1 })
-  //     );
-  //     // console.log("prev ", this.state.page)
-  // };
+  console.log("articles length ",articles.length, typeof articles)
+
     
   return (
     <div style={{padding:"2%", marginTop: "50px" }}>
@@ -152,17 +146,17 @@ const News = (props) => {
       <h5>Top {`${capitalizeFirstLetter(props.category)}`} Headlines</h5>
       <div className="d-flex justify-content-center">{loading && <Spinner/>}</div>
       <InfiniteScroll
-      dataLength={articles.length}
+      dataLength={totalArticles}
       next={fetchMoreData}
-      // hasMore={articles.length !== totalArticles}
-      hasMore={hasMore}
+      hasMore={articles.length !== totalArticles}
+      // hasMore={hasMore}
       // loader={<div className="d-flex justify-content-center">{loading && <Spinner/>}</div>}
       >
         <div className="container">
           <div className="row">
-          {articles.map((element)=>{
-          return <div className="col-md-4" key={element.url}>
-            <NewsItem title={element.title?element.title:""} description={element.description?element.description:''} imageUrl={element.urlToImage} articleLink={element.url} author={element.author} publishedDate={formatPublishedDate(element.publishedAt)} source={element.source.name}/>
+          {Object.entries(articles).map(([index, article])=>{
+          return <div className="col-md-4" key={index}>
+            <NewsItem title={article.title?article.title:""} description={article.description?article.description:''} imageUrl={article.urlToImage} articleLink={article.url} author={article.author} publishedDate={formatPublishedDate(article.publishedAt)} source={article.source.name}/>
             </div>
         })}
           </div>

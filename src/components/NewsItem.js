@@ -2,7 +2,7 @@ import React from 'react'
 
 const NewsItem = (props) => {
 
-  console.log("NewsItem props:", props)
+  // console.log("NewsItem props:", props)
   
   let {title, description, imageUrl, articleLink, author, publishedDate, source } = props;
   return (
