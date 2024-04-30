@@ -14,8 +14,8 @@ NewsAPI: A RESTful API that provides access to news articles from various source
 
 ## Screeenshots
 <div>
-  <img src='https://github.com/ubednama/YANewsApp/assets/61332446/0cd69ec8-630b-4c50-8e62-c3807e40979a' style={{ width: '49%' }}/>
-  <img src= 'https://github.com/ubednama/YANewsApp/assets/61332446/2e900dee-a06e-4408-864a-5a4c538a23ef' style={{ width: '49%' }}/>
+  <img src='https://github.com/ubednama/YANewsApp/assets/61332446/0cd69ec8-630b-4c50-8e62-c3807e40979a' style={{ width: '48%' }}/>
+  <img src= 'https://github.com/ubednama/YANewsApp/assets/61332446/2e900dee-a06e-4408-864a-5a4c538a23ef' style={{ width: '48' }}/>
   
 </div>
 
